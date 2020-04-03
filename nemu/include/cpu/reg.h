@@ -18,7 +18,7 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
  typedef struct {
    // general purpose registers
    union { 
-    struct {
+    union {
        union {
           uint32_t _32;
           uint16_t _16; 
