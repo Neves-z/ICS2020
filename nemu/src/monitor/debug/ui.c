@@ -36,6 +36,30 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_si(char *args){
+  if(args == NULL) {
+  	cpu_exec(1);
+  	return 0;
+  }
+  // TODO: 利用 strtok 读取出 N
+  char *steps = strtok(NULL, " ");
+  // TODO: 然后根据 N 来执行对应的 cpu_exec(N) 操作
+  if(steps == NULL) {
+        //N 缺省，即si
+        cpu_exec(1);
+   } 
+  else {
+    int n = 1;
+    if(sscanf(steps, "%d", &n) == 1 &&n >= -1) {
+       cpu_exec(n); 
+    }
+    else { 
+      printf("Bad number: \e[0;31m%s\e[0m\n", steps); //输入不合法；
+    }
+	}
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -46,7 +70,7 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si", "Run serveral steps of the program", cmd_si },
   /* TODO: Add more commands */
 
 };
@@ -75,6 +99,8 @@ static int cmd_help(char *args) {
   }
   return 0;
 }
+
+
 
 void ui_mainloop(int is_batch_mode) {
   if (is_batch_mode) {
