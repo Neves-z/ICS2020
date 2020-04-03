@@ -64,12 +64,12 @@ static int cmd_info(char *args){
     // 分割字符
     char *subcommand = strtok(NULL, " ");
     // 判断子命令是否是r
-    if (strcmp(subcommand,"r")) {
+    if (strcmp(subcommand,"r")==0) {
         // 依次打印所有寄存器
         for(int j=0;j<8;j++) 
           printf("%s:\t%8x\t", regsl[j], cpu.gpr[j]._32);
     }
-    else if (strcmp(subcommand,"w")) {
+    else if (strcmp(subcommand,"w")==0) {
         // 这里我们会在 PA1.3 中实现
     }
     else{
