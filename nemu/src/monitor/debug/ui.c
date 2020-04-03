@@ -60,6 +60,24 @@ static int cmd_si(char *args){
 	return 0;
 }
 
+static int cmd_info(char *args){
+    // 分割字符
+    char *subcommand = strtok(NULL, " ");
+    // 判断子命令是否是r
+    if (strcmp(subcommand,"r")) {
+        // 依次打印所有寄存器
+        for(int j=0;j<8;j++) 
+          printf("%s:\t%8x\t", regsl[j], cpu.gpr[j]._32);
+    }
+    else if (strcmp(subcommand,"w")) {
+        // 这里我们会在 PA1.3 中实现
+    }
+    else{
+      printf("Bad Subcommand\n");
+    }
+    return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -71,6 +89,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Run serveral steps of the program", cmd_si },
+  { "info", "Print register status or monitor information", cmd_info },
   /* TODO: Add more commands */
 
 };
