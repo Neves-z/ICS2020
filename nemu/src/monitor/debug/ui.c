@@ -78,6 +78,34 @@ static int cmd_info(char *args){
     return 0;
 }
 
+static int cmd_x(char *args){
+  //分割字符串，得到起始位置和要读取的次数
+  char *ch=strtok(NULL," ");
+  int num =atoi(ch);
+  if (num<=0){
+     printf("please input an positive integer\n");
+     return 0;
+  }
+  char *expr=strtok(NULL," ");
+  if (expr==NULL){
+     printf("please input an hexadecimal address like 0x~\n");
+     return 0;
+  }
+  vaddr_t addr;
+  sscanf(expr,"%x",&addr);
+  //循环使用 vaddr_read 函数来读取内存
+  //double p=num;
+  //int n=ceil(p/4.0);
+  for (int i=0;i<num;i++){
+    printf("%#x: ",addr);
+	  int memory=vaddr_read(addr,4);
+    printf("%#x ",memory);
+    addr+=4;	  
+    printf("\n");
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -90,6 +118,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Run serveral steps of the program", cmd_si },
   { "info", "Print register status or monitor information", cmd_info },
+  { "x","Scan memory",cmd_x},
   /* TODO: Add more commands */
 
 };
