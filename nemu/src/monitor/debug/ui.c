@@ -72,8 +72,12 @@ static int cmd_info(char *args){
           printf("%s:\t%#06x\t%d\t\n", regsw[j], cpu.gpr[j]._16,cpu.gpr[j]._16);
         }
         for(int j=0;j<8;j++){
-          printf("%s:\t%#04x\t%d\t\n", regsb[j], cpu.gpr[j]._8[1],cpu.gpr[j]._8[1]);
-        }
+          if(j<4)	
+            printf("%s:\t%#04x\t%d\t\n", regsb[j], cpu.gpr[j]._8[0],cpu.gpr[j]._8[0]);
+	  else{
+	    printf("%s:\t%#04x\t%d\t\n", regsb[j], cpu.gpr[j-4]._8[1],cpu.gpr[j-4]._8[1]);  
+          }
+       }
     }
     else if (strcmp(subcommand,"w")==0) {
         // 这里我们会在 PA1.3 中实现
@@ -83,7 +87,6 @@ static int cmd_info(char *args){
     }
     return 0;
 }
-
 static int cmd_x(char *args){
   //分割字符串，得到起始位置和要读取的次数
   char *ch=strtok(NULL," ");
