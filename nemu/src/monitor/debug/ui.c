@@ -107,16 +107,9 @@ static int cmd_x(char *args){
     int byte[4]={0,0,0,0};
     int i=0;
     while(memory){
-      byte[i++]=memory%256;
+      byte[i]=memory%256;
       memory/=256;
-    }
-    for(int j=0;j<4;j++){
-      /*if(byte[j]<16)
-          printf("0%x  ",byte[j]);
-      else {
-        printf("%x  ",byte[j]);
-      }*/
-      printf("%02x  ",byte[j]);
+      printf("%02x  ",byte[i++]);
     }
     addr+=4;	  
     printf("\n");
