@@ -97,7 +97,7 @@ static int cmd_x(char *args){
   for (int i=0;i<num;i++){
     printf("%#08x: ",addr);
     int memory=vaddr_read(addr,4);
-    printf("%#08x ",memory);
+    printf("%#010x ",memory);
     int byte[4]={0,0,0,0};
     int i=3;
     while(memory){
