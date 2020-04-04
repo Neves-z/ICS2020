@@ -68,6 +68,12 @@ static int cmd_info(char *args){
         // 依次打印所有寄存器
         for(int j=0;j<8;j++) 
           printf("%s:\t%#010x\t%d\t\n", regsl[j], cpu.gpr[j]._32,cpu.gpr[j]._32);
+        for(int j=0;j<8;j++){
+          printf("%s:\t%#06x\t%d\t\n", regsw[j], cpu.gpr[j]._16,cpu.gpr[j]._16);
+        }
+        for(int j=0;j<8;j++){
+          printf("%s:\t%#04x\t%d\t\n", regsb[j], cpu.gpr[j]._8[1],cpu.gpr[j]._8[1]);
+        }
     }
     else if (strcmp(subcommand,"w")==0) {
         // 这里我们会在 PA1.3 中实现
