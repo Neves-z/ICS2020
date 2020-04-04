@@ -67,7 +67,7 @@ static int cmd_info(char *args){
     if (strcmp(subcommand,"r")==0) {
         // 依次打印所有寄存器
         for(int j=0;j<8;j++) 
-          printf("%s:\t%#8x\t%d\t\n", regsl[j], cpu.gpr[j]._32,cpu.gpr[j]._32);
+          printf("%s:\t%#10x\t%d\t\n", regsl[j], cpu.gpr[j]._32,cpu.gpr[j]._32);
     }
     else if (strcmp(subcommand,"w")==0) {
         // 这里我们会在 PA1.3 中实现
@@ -95,9 +95,9 @@ static int cmd_x(char *args){
   sscanf(expr,"%x",&addr);
   //循环使用 vaddr_read 函数来读取内存
   for (int i=0;i<num;i++){
-    printf("%#08x: ",addr);
+    printf("%#010x:   ",addr);
     int memory=vaddr_read(addr,4);
-    printf("%#010x ",memory);
+    printf("%#010x   ",memory);
     int byte[4]={0,0,0,0};
     int i=3;
     while(memory){
@@ -105,11 +105,12 @@ static int cmd_x(char *args){
       memory/=256;
     }
     for(int j=0;j<4;j++){
-      if(byte[j]<16)
+      /*if(byte[j]<16)
           printf("0%x  ",byte[j]);
       else {
         printf("%x  ",byte[j]);
-      }
+      }*/
+      printf("%02x  ",byte[j]);
     }
     addr+=4;	  
     printf("\n");
