@@ -98,6 +98,19 @@ static int cmd_x(char *args){
     printf("%#x: ",addr);
 	  int memory=vaddr_read(addr,4);
     printf("%#x ",memory);
+    int byte[4];
+    int i=3;
+    while(memory){
+      byte[i--]=memory%256;
+      memory/=256;
+    }
+    for(int j=0;j<4;j++){
+      if(byte[j]==0)
+          printf("00  ");
+      else {
+        printf("%x  ",byte[j]);
+      }
+    }
     addr+=4;	  
     printf("\n");
   }
