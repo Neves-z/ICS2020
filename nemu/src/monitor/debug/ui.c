@@ -95,9 +95,9 @@ static int cmd_x(char *args){
   sscanf(expr,"%x",&addr);
   //循环使用 vaddr_read 函数来读取内存
   for (int i=0;i<num;i++){
-    printf("%#8x: ",addr);
+    printf("%#08x: ",addr);
     int memory=vaddr_read(addr,4);
-    printf("%#8x ",memory);
+    printf("%#08x ",memory);
     int byte[4]={0,0,0,0};
     int i=3;
     while(memory){
