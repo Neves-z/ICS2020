@@ -107,9 +107,11 @@ static int cmd_x(char *args){
     int byte[4]={0,0,0,0};
     int i=0;
     while(memory){
-      byte[i]=memory%256;
+      byte[i++]=memory%256;
       memory/=256;
-      printf("%02x  ",byte[i++]);
+    }
+    for(int j=0;j<4;j++){
+      printf("%02x  ",byte[j]);
     }
     addr+=4;	  
     printf("\n");
