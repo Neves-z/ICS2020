@@ -200,7 +200,7 @@ int op_comparative(int i){ //获取操作符的优先级
 int find_dominated_op(int p,int q){
   int stack[50]; // 用数组模拟栈,存储操作符在数组tokens中的位置;
   int i=0;
-  stack[0]=p;    // 注意：第一个位置绝对不会是'(';
+  stack[0]=q;    // 注意：最后一个位置绝对不会是'(';
   bool mark=false;
   for(int j=p;j<=q;j++){
    if(isoperand(j)&&tokens[stack[i]].type!='(') {  // 是操作符或括号且不在括号内部
@@ -217,7 +217,11 @@ int find_dominated_op(int p,int q){
       }
     } 
     if(tokens[j].type==')'&&tokens[stack[i]].type=='(') { //括号出栈
-        i--;
+	if(i==0){
+           stack[0]=q;
+	   mark=false;
+	}
+	else i--;
     }
   }
   return stack[i]; //栈顶优先级最低且相对最靠右
