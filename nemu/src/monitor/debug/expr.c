@@ -138,24 +138,36 @@ static bool make_token(char *e) {
 }
 
 
-int check_parentheses(int p, int q) {
-  if(!((tokens[p].type=='(')&&tokens[q].type==')'))
+int check_parentheses1(int p, int q) {
+	if(!((tokens[p].type=='(')&&tokens[q].type==')'))
   {
     return false;  //the whole expression is not surrounded by a matched pair of parentheses
   }
+  else
+  {
+    return true;
+  }
+  
+}
+int check_parentheses2(int p, int q) {
   int i,j=0;
-  for(i=p+1;i<q;i++)
- {
+  for(i=p+1;i<q;i++)  {
      if(tokens[i].type=='(')
 	j++;
      else if(tokens[i].type==')')
-        j--;
+	j--;
      if(j<0){
         printf("表达式非法！\n");
-        assert(0);      
-     }
- }
- return j==0;
+        return 0;
+    }
+  }
+  if(j==0)
+    return true;
+  else
+  {
+    printf("表达式非法！\n");
+      return 0;
+  }
 }
 
 static struct Node {
@@ -264,7 +276,7 @@ uint32_t eval(int p, int q) {
     }
     return number;
   }
-  else if (check_parentheses(p, q) == true) {  // 脱括号
+  else if (check_parentheses1(p, q) == true) {  // 脱括号
     return eval(p + 1, q - 1);
   }
   else {
@@ -306,9 +318,13 @@ uint32_t expr(char *e, bool *success) {
     return 0;
   }
 
-  if(!check_parentheses(0,nr_token-1))
+  if(!check_parentheses1(0,nr_token-1)&&check_parentheses2(0,nr_token-1))
   {
-    printf("括号不匹配,但表达式合法!\n");
+    printf("括号不匹配，但表达式合法！\n");
+  }
+  if(!check_parentheses2(0,nr_token-1))
+  {
+    return 0;
   }
   *success=true;
   return eval(0,nr_token-1);
