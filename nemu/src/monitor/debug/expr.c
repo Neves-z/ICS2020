@@ -181,8 +181,8 @@ static struct Node {
 };
 int NR_TABLE = sizeof(table) / sizeof(table[0]);
 int isoperand(int i){
-  //检查是否为操作符或括号
-	return tokens[i].type!=TK_NOTYPE && tokens[i].type!=TK_TEN && tokens[i].type!=TK_REG && tokens[i].type!=TK_SYMB && tokens[i].type!=TK_HEX;
+  //检查是否为操作符
+	return tokens[i].type!=TK_NOTYPE && tokens[i].type!=TK_TEN && tokens[i].type!=TK_REG && tokens[i].type!=TK_SYMB && tokens[i].type!=TK_HEX && tokens[i].type!=')' &&tokens[i].type!='(';
 }
 
 int op_comparative(int i){ //获取操作符的优先级
@@ -210,7 +210,7 @@ int find_dominated_op(int p,int q){
 	//printf("ok%d\n",j);
       }
       else{
-        if(tokens[j].type=='('||(op_comparative(j)>=op_comparative(stack[i]))){ //比栈顶操作符优先级低
+        if(op_comparative(j)>=op_comparative(stack[i])){ //比栈顶操作符优先级低
           stack[++i]=j;
 	  //printf("%d\n",stack[i]);
         }
@@ -223,7 +223,7 @@ int find_dominated_op(int p,int q){
 	}
 	else i--;
     }
-    if(tokens[stack[i]].type=='('&&tokens[j].type=='(') { //左括号进栈
+    if(tokens[j].type=='(') { //左括号进栈
         stack[++i]=j;
     }
   }
