@@ -130,7 +130,7 @@ static int cmd_p(char *args){
     printf("invalid expression: '%s'\n", args);
   }
   else {
-    printf("result=%d\n", val);
+	printf("result: HEX=%x    OCT=%d\n", val,val);
   }
   return 0;
 }
