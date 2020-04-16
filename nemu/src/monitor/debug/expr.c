@@ -205,10 +205,12 @@ int find_dominated_op(int p,int q){
    if(isoperand(j)&&tokens[stack[i]].type!='(') {  // 是操作符或括号且不在括号内部
       if(i==0){
         stack[i]=j;
+	printf("%d\n",j);
       }
       else{
         if(tokens[j].type=='('||(op_comparative(j)>=op_comparative(stack[i]))){ //比栈顶操作符优先级低
           stack[++i]=j;
+	  printf("%d\n",stack[i]);
         }
       }
     } 
