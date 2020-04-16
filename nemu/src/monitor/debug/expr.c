@@ -201,11 +201,13 @@ int find_dominated_op(int p,int q){
   int stack[50]; // 用数组模拟栈,存储操作符在数组tokens中的位置;
   int i=0;
   stack[0]=p;    // 注意：第一个位置绝对不会是'(';
+  bool mark=false;
   for(int j=p;j<=q;j++){
    if(isoperand(j)&&tokens[stack[i]].type!='(') {  // 是操作符或括号且不在括号内部
-      if(i==0){
+      if(i==0&&!mark){
         stack[i]=j;
-	printf("%d\n",j);
+	mark=true; //第一个操作符已入栈
+	printf("ok%d\n",j);
       }
       else{
         if(tokens[j].type=='('||(op_comparative(j)>=op_comparative(stack[i]))){ //比栈顶操作符优先级低
