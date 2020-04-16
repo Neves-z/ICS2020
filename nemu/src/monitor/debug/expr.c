@@ -8,7 +8,7 @@
 
 enum {
   TK_NOTYPE = 256, TK_EQ,TK_NEQ,TK_TEN, TK_HEX,
-  TK_REG, TK_SYMB, TK_LS, TK_RS, TK_NG, TK_NL,TK_AND, TK_OR,
+  TK_REG, TK_SYMB, TK_LS, TK_RS, TK_NG, TK_NL,TK_AND, TK_OR,TK_DEREF,TK_NEG,
 
   /* TODO: Add more token types */
 
@@ -192,6 +192,8 @@ static struct Node {
 	{'%',3},
 	{'!',2},
 	{'~',2},
+	{TK_DEREF,2},
+	{TK_NEG,2},
 };
 int NR_TABLE = sizeof(table) / sizeof(table[0]);
 int isoperand(int i){
@@ -284,7 +286,7 @@ uint32_t eval(int p, int q) {
     val1=val2=0;
     op = find_dominated_op(p,q);  //获取较低优先级运算符的位置
    // printf("op: %d\n", op);
-    if(tokens[op].type!='!'&&tokens[op].type!='~')
+    if(tokens[op].type!='!'&&tokens[op].type!='~'&&tokens[op].type!=TK_NEG&&tokens[op].type!=TK_DEREF)
 	val1 = eval(p, op - 1);
     val2 = eval(op + 1, q);
     switch (tokens[op].type) {
@@ -306,6 +308,8 @@ uint32_t eval(int p, int q) {
       case TK_OR: return val1 || val2;
       case TK_LS: return val1 << val2;
       case TK_RS: return val1 >> val2;
+      case TK_DEREF: return vaddr_read(val2,4);
+      case TK_NEG: return -val2;
       default: assert(0);
     }
   }
@@ -327,5 +331,13 @@ uint32_t expr(char *e, bool *success) {
     return 0;
   }
   *success=true;
+    int i;
+    for(i = 0; i < nr_token; i++)
+    {
+         if(tokens[i].type == '*' && (i == 0 || isoperand(i-1)))
+		tokens[i].type =TK_DEREF;
+         else if(tokens[i].type == '-' && (i == 0 || isoperand(i-1)))
+		tokens[i].type = TK_NEG;
+    }
   return eval(0,nr_token-1);
 }
