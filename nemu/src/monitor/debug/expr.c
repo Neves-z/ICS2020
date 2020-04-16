@@ -216,12 +216,15 @@ int find_dominated_op(int p,int q){
         }
       }
     } 
-    if(tokens[j].type==')'&&tokens[stack[i]].type=='(') { //括号出栈
+   if(tokens[j].type==')'&&tokens[stack[i]].type=='(') { //括号出栈
 	if(i==0){
            stack[0]=q;
-	   mark=false;
+	   mark=false;   //栈内无操作符了
 	}
 	else i--;
+    }
+    if(tokens[stack[i]].type=='('&&tokens[j].type=='(') { //左括号进栈
+        stack[++i]=j;
     }
   }
   return stack[i]; //栈顶优先级最低且相对最靠右
