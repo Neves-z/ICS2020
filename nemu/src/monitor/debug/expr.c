@@ -137,14 +137,105 @@ static bool make_token(char *e) {
   return true;
 }
 
+
+int check_parentheses(int p, int q) {
+  if(!((tokens[p].type=='(')&&tokens[q].type==')'))
+  {
+    return false;  //the whole expression is not surrounded by a matched pair of parentheses
+  }
+  int i,j=0;
+  for(i=p+1;i<q;i++)
+ {
+     if(tokens[i].type=='(')
+	j++;
+     else if(tokens[i].type==')')
+        j--;
+     if(j<0)
+	return 0;
+ }
+ return j==0;
+}
+
+/*
+
+uint32_t eval(int p, int q) {
+  //printf("p: %d q:%d\n", p,q);
+  if (p > q) {
+    return false;
+  }
+  else if (p == q) {             // 单个表达式，只能为数字或者寄存器的情况
+    int number = 0;
+    if(tokens[p].type == TK_HEX) // 十六进制转化成十六进制数
+      sscanf(tokens[p].str, "%x",&number);
+    else if (tokens[p].type == TK_TEN)   // 十进制数转化成十进制数
+      sscanf(tokens[p].str, "%d",&number);
+    else if (tokens[p].type == TK_REG) {// 是寄存器
+      for (int i = 0;i <strlen(tokens[p].str);i ++) {
+        tokens[p].str[i] = tokens[p].str[i + 1]; // 把$号去掉
+      }
+      if (strcmp(tokens[p].str,"eip") == 0) {//如果是eip寄存器
+        number = cpu.eip;
+      }
+      else {
+          for (int i = 0;i < 8;i ++) {
+            if (strcmp(tokens[p].str,regsl[i]) == 0) {//规定只有32位寄存器
+              number = cpu.gpr[i]._32;
+              break;
+            }
+          }
+        }
+    }
+    return number;
+  }
+  else if (check_parentheses(p, q) == true) {  // 脱括号
+    return eval(p + 1, q - 1);
+  }
+  else {
+    int op,val1,val2;
+    val1=val2=0;
+    op = find_dominated_op(p,q);  //获取较低优先级运算符的位置
+    //printf("op: %d\n", op);
+    if(tokens[op].type!='!'&&tokens[op].type!='~')
+	val1 = eval(p, op - 1);
+    val2 = eval(op + 1, q);
+    switch (tokens[op].type) {
+      case '+': return val1 + val2;
+      case '-': return val1 - val2;
+      case '*': return val1 * val2;
+      case '/': return val1 / val2;
+      case '%': return val1 % val2;
+      case '^': return val1 ^ val2;
+      case '<': return val1 < val2;
+      case '>': return val1 > val2;
+      case '!': return !val2;
+      case '~': return ~val2;
+      case TK_EQ: return val1 == val2;
+      case TK_NEQ: return val1 != val2;
+      case TK_NG: return val1 <= val2;
+      case TK_NL: return val1 >= val2;
+      case TK_AND: return val1 && val2;
+      case TK_OR: return val1 || val2;
+      case TK_LS: return val1 << val2;
+      case TK_RS: return val1 >> val2;
+      default: assert(0);
+    }
+  }
+  return 0;
+}
+*/
 uint32_t expr(char *e, bool *success) {
+  *success = false;	
   if (!make_token(e)) {
-    *success = false;
     return 0;
   }
-*success = true;
-  /* TODO: Insert codes to evaluate the expression. */
- // TODO();
+
+  if(!check_parentheses(0,nr_token-1))
+  {
+    printf("括号不匹配!\n");
+    return 0;
+  }
+  *success=true;
+	//return eval(0,nr_token-1);
 
   return 0;
 }
