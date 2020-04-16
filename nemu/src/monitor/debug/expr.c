@@ -7,7 +7,8 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ
+  TK_NOTYPE = 256, TK_EQ,TK_NEQ,TK_TEN, TK_HEX,
+  TK_REG, TK_SYMB, TK_LS, TK_RS, TK_NG, TK_NL,TK_AND, TK_OR,
 
   /* TODO: Add more token types */
 
@@ -24,7 +25,33 @@ static struct rule {
 
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
-  {"==", TK_EQ}         // equal
+  {"==", TK_EQ},        // equal
+  {"!=", TK_NEQ},
+  {"0[x,X][0-9a-fA-F]+", TK_HEX},   //十六进制数
+  {"[0-9]+",TK_TEN},
+  {"\\$e[a,d,c,b]x",TK_REG},       //三十二位寄存器
+  {"\\$e[s,b]p", TK_REG},          //十六位寄存器
+  {"\\$e[d,s]i",TK_REG},
+  {"[a-zA-Z][a-zA-Z0-9_]*", TK_SYMB},  //变量名或函数名
+  {"\\*", '*'},
+  {"/", '/'},
+  {"%", '%'},
+  {"\\(", '('},
+  {"\\)", ')'},
+  {"<<", TK_LS},			//左移
+  {">>", TK_RS},			//右移
+  {"<=",TK_NG},				//不大于
+  {">=",TK_NL},				//不小于
+  {"<", '<'},
+  {">", '>'},
+  {"&&",TK_AND},           //与
+  {"\\|\\|",TK_OR},        //或
+  {"&",'&'},
+  {"\\^",'^'},
+  {"\\|",'|'},
+  {"!",'!'},
+  {"~",'~'},
+
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
