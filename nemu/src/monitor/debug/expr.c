@@ -107,9 +107,9 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
-        switch (rules[i].token_type) {
+      /*  switch (rules[i].token_type) {
           default: TODO();
-        }
+        }*/
 
         break;
       }
@@ -129,9 +129,9 @@ uint32_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-
+*success = true;
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+ // TODO();
 
   return 0;
 }
