@@ -151,7 +151,7 @@ int check_parentheses1(int p, int q) {
 }
 int check_parentheses2(int p, int q) {
   int i,j=0;
-  for(i=p+1;i<q;i++)  {
+  for(i=p;i<=q;i++)  {
      if(tokens[i].type=='(')
 	j++;
      else if(tokens[i].type==')')
