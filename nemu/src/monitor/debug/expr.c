@@ -156,7 +156,71 @@ int check_parentheses(int p, int q) {
  return j==0;
 }
 
-/*
+static struct Node {
+	int operand;
+	int priority;
+} table[] = {
+	{TK_OR,10},
+	{TK_AND,9},
+	{'^',8},
+	{TK_EQ,7},
+	{TK_NEQ,7},
+	{'>',6},
+	{'<',6},
+	{TK_NG,6},
+	{TK_NL,6},
+	{TK_LS,5},
+	{TK_RS,5},
+	{'+',4},
+	{'-',4},
+	{'*',3},
+	{'/',3},
+	{'%',3},
+	{'!',2},
+	{'~',2},
+};
+int NR_TABLE = sizeof(table) / sizeof(table[0]);
+int isoperand(int i){
+  //检查是否为操作符或括号
+	return tokens[i].type!=TK_NOTYPE && tokens[i].type!=TK_TEN && tokens[i].type!=TK_REG && tokens[i].type!=TK_SYMB && tokens[i].type!=TK_HEX;
+}
+
+int op_comparative(int i){ //获取操作符的优先级
+  int j;
+  for(j=0;j<NR_TABLE;j++){
+    if(tokens[i].type==table[j].operand){
+      return table[j].priority;
+    }
+  }
+  if(NR_TABLE==j){
+    printf("未识别该操作符！\n");
+  }
+  return 0;
+}
+int find_dominated_op(int p,int q){
+  int stack[50]; // 用数组模拟栈,存储操作符在数组tokens中的位置;
+  int i=0;
+  stack[0]=0;    // 注意：第一个位置绝对不会是'(';
+  for(int j=p;j<=q;j++){
+   if(isoperand(j)&&tokens[stack[i]].type!='(') {  // 是操作符或括号且不在括号内部
+      if(i==0){
+        stack[i]=j;
+      }
+      else{
+        if(tokens[j].type=='('||(op_comparative(j)>=op_comparative(stack[i]))){ //比栈顶操作符优先级低
+          stack[++i]=j;
+        }
+      }
+    } 
+    if(tokens[j].type==')'&&tokens[stack[i]].type=='(') { //括号出栈
+        i--;
+    }
+  }
+  return stack[i]; //栈顶优先级最低且相对最靠右
+}
+
+
+
 
 uint32_t eval(int p, int q) {
   //printf("p: %d q:%d\n", p,q);
@@ -222,7 +286,7 @@ uint32_t eval(int p, int q) {
   }
   return 0;
 }
-*/
+
 uint32_t expr(char *e, bool *success) {
   *success = false;	
   if (!make_token(e)) {
@@ -235,7 +299,7 @@ uint32_t expr(char *e, bool *success) {
     return 0;
   }
   *success=true;
-	//return eval(0,nr_token-1);
+  return eval(0,nr_token-1);
 
   return 0;
 }
