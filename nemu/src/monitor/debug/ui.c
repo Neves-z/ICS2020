@@ -118,6 +118,22 @@ static int cmd_x(char *args){
   }
   return 0;
 }
+static int cmd_p(char *args){
+  //表达式求值
+  if(args == NULL) { 
+    printf("Command format: \"p EXPR\"");
+    return 0;
+  }
+  bool success;
+  uint32_t val = expr(args, &success);
+  if(!success) {
+    printf("invalid expression: '%s'\n", args);
+  }
+  else {
+    printf("result=%d\n", val);
+  }
+  return 0;
+}
 
 static int cmd_help(char *args);
 
@@ -132,6 +148,7 @@ static struct {
   { "si", "Run serveral steps of the program", cmd_si },
   { "info", "Print register status or monitor information", cmd_info },
   { "x","Scan memory",cmd_x},
+  { "p","Regular expression solving",cmd_p},
   /* TODO: Add more commands */
 
 };
