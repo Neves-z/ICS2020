@@ -150,8 +150,10 @@ int check_parentheses(int p, int q) {
 	j++;
      else if(tokens[i].type==')')
         j--;
-     if(j<0)
-	return 0;
+     if(j<0){
+        printf("表达式非法！\n");
+        assert(0);      
+     }
  }
  return j==0;
 }
@@ -306,11 +308,8 @@ uint32_t expr(char *e, bool *success) {
 
   if(!check_parentheses(0,nr_token-1))
   {
-    printf("括号不匹配!\n");
-    return 0;
+    printf("括号不匹配,但表达式合法!\n");
   }
   *success=true;
   return eval(0,nr_token-1);
-
-  return 0;
 }
