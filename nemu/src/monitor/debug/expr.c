@@ -207,12 +207,12 @@ int find_dominated_op(int p,int q){
       if(i==0&&!mark){
         stack[i]=j;
 	mark=true; //第一个操作符已入栈
-	printf("ok%d\n",j);
+	//printf("ok%d\n",j);
       }
       else{
         if(tokens[j].type=='('||(op_comparative(j)>=op_comparative(stack[i]))){ //比栈顶操作符优先级低
           stack[++i]=j;
-	  printf("%d\n",stack[i]);
+	  //printf("%d\n",stack[i]);
         }
       }
     } 
@@ -262,7 +262,7 @@ uint32_t eval(int p, int q) {
     int op,val1,val2;
     val1=val2=0;
     op = find_dominated_op(p,q);  //获取较低优先级运算符的位置
-    printf("op: %d\n", op);
+   // printf("op: %d\n", op);
     if(tokens[op].type!='!'&&tokens[op].type!='~')
 	val1 = eval(p, op - 1);
     val2 = eval(op + 1, q);
