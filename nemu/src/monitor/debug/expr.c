@@ -38,7 +38,7 @@ static struct rule {
   {"0[x,X][0-9a-fA-F]+", TK_HEX},     // 十六进制数
   {"[0-9]+",TK_TEN},                  // 十进制数
   {"\\$e[a,d,c,b]x",TK_REG},          // 三十二位寄存器
-  {"\\$e[s,b]p", TK_REG},       
+  {"\\$e[s,b,i]p", TK_REG},       
   {"\\$e[d,s]i",TK_REG},
   {"\\$[a,b,c,d]x",TK_REG},           // 十六位寄存器
   {"\\$[s,b]p", TK_REG},  
