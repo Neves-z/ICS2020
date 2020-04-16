@@ -107,10 +107,23 @@ static bool make_token(char *e) {
          * of tokens, some extra actions should be performed.
          */
 
-      /*  switch (rules[i].token_type) {
-          default: TODO();
-        }*/
-
+        switch (rules[i].token_type) {
+	      	case TK_NOTYPE: break;     // 空格直接被丢弃
+		case TK_REG:               // 寄存器
+		case TK_TEN:               // 十进制数
+		case TK_HEX:               // 十六进制数
+		case TK_SYMB:{	     // 函数名或变量名
+	          int j;
+		  for(j=0;j<substr_len;j++)
+		  {
+                     tokens[nr_token].str[j]=*(substr_start+j);
+               	  }
+		  tokens[nr_token].str[j]='\0';
+		}
+		default:                    // 其他类型，例如'+','-'
+              	  tokens[nr_token].type = rules[i].token_type;
+		  nr_token ++;              // 更新已经识别的toke
+        }
         break;
       }
     }
