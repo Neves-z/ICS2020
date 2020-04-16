@@ -269,7 +269,7 @@ uint32_t eval(int p, int q) {
     int op,val1,val2;
     val1=val2=0;
     op = find_dominated_op(p,q);  //获取较低优先级运算符的位置
-   // printf("op: %d\n", op);
+    printf("op: %d\n", op);
     if(tokens[op].type!='!'&&tokens[op].type!='~')
 	val1 = eval(p, op - 1);
     val2 = eval(op + 1, q);
