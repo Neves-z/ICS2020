@@ -77,7 +77,8 @@ static int cmd_info(char *args){
         }
     }
     else if (strcmp(subcommand,"w")==0) {
-        // 这里我们会在 PA1.3 中实现
+       // list_watchpoint();
+	    // 这里我们会在 PA1.3 中实现
     }
     else{
       printf("Bad Subcommand!\n");
@@ -138,6 +139,38 @@ static int cmd_p(char *args){
   return 0;
 }
 
+static int cmd_w(char *args){ // 申请一个空闲的监视点结构
+	if(args == NULL) {
+		puts("Command format: \"w EXPR\"");
+		return 0;
+	}
+	int NO = set_watchpoint(args);
+        bool success;
+        int value=expr(args, &success);
+	if(NO == -1||!success) {  // 申请一个空闲的监视点失败或者表达式求值失败
+		printf("invalid expression: '%s'\n", args);
+		return 0;
+	}
+	printf("Set watchpoint %d\n!", NO);
+  printf("expr = %s\nold  value = %#x\n",args,value);
+	return 0;
+}
+
+
+static int cmd_d(char *args){  //释放一个监视点
+  char *ch=strtok(args," ");
+  int number=atoi(ch);
+  if(number<0){
+    printf("Please input an nonnegative integer!\n");
+    return 0;
+    }
+  else {
+    free_wp(number);
+  }
+  return 0;
+}
+
+
 static int cmd_help(char *args);
 
 static struct {
@@ -152,6 +185,8 @@ static struct {
   { "info", "Print register status or monitor information", cmd_info },
   { "x","Scan memory",cmd_x},
   { "p","Regular expression solving",cmd_p},
+  { "w","Apply for a watch point ",cmd_w},
+  { "d","Delete a watch point ",cmd_d},
   /* TODO: Add more commands */
 
 };

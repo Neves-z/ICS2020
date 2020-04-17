@@ -71,6 +71,18 @@ int free_wp(int NO){  //释放一个空闲的监视点
     return 0;
 }
 
+int set_watchpoint(char *e) {
+  uint32_t val;
+  bool success;
+  val = expr(e, &success);
+  if(!success) return -1;
+  WP* p;
+  p=new_wp();        //启用监视点
+  strcpy(p->exprs,e);
+  p->old_val=val;   // 赋旧值
+  return p->NO;     // 返回监视点编号
+}
+
 void init_wp_pool() {
   int i;
   for (i = 0; i < NR_WP; i ++) {
