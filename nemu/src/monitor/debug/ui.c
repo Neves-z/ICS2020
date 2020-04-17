@@ -92,13 +92,14 @@ static int cmd_x(char *args){
      printf("please input an positive integer\n");
      return 0;
   }
-  char *expr=strtok(NULL," ");
-  if (expr==NULL){
+  char *exprs=strtok(NULL," ");
+  if (exprs==NULL){
      printf("please input an hexadecimal address like 0x~\n");
      return 0;
   }
-  vaddr_t addr;
-  sscanf(expr,"%x",&addr);
+  bool success;
+  vaddr_t addr=expr(exprs, &success);
+ // sscanf(expr,"%x",&addr);
   //循环使用 vaddr_read 函数来读取内存
   for (int i=0;i<num;i++){
     printf("%#010x:   ",addr);
