@@ -101,21 +101,23 @@ static int cmd_x(char *args){
   vaddr_t addr=expr(exprs, &success);
  // sscanf(expr,"%x",&addr);
   //循环使用 vaddr_read 函数来读取内存
-  for (int i=0;i<num;i++){
-    printf("%#010x:   ",addr);
-    int memory=vaddr_read(addr,4);
-    printf("%#010x   ",memory);
-    int byte[4]={0,0,0,0};
-    int i=0;
-    while(memory){
-      byte[i++]=memory%256;
-      memory/=256;
+  if(success){   //表达式合法；
+    for (int i=0;i<num;i++){
+      printf("%#010x: ",addr);
+      int memory=vaddr_read(addr,4);
+      printf("%#010x   ",memory);
+      int byte[4]={0,0,0,0};
+      int i=0;
+      while(memory){
+        byte[i++]=memory%256;
+        memory/=256;  
+      }
+      for(int j=0;j<4;j++) { 
+        printf("%02x  ",byte[j]);  
+      }
+      addr+=4;	  
+      printf("\n");
     }
-    for(int j=0;j<4;j++){
-      printf("%02x  ",byte[j]);
-    }
-    addr+=4;	  
-    printf("\n");
   }
   return 0;
 }
