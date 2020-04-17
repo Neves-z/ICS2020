@@ -83,6 +83,11 @@ int set_watchpoint(char *e) {
   return p->NO;     // 返回监视点编号
 }
 
+bool delete_watchpoint(int NO){
+   free_wp(NO);
+   return true;
+}
+
 void init_wp_pool() {
   int i;
   for (i = 0; i < NR_WP; i ++) {

@@ -165,7 +165,7 @@ static int cmd_d(char *args){  //释放一个监视点
     return 0;
     }
   else {
-    free_wp(number);
+      delete_watchpoint(number);
   }
   return 0;
 }
