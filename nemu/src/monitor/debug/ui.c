@@ -151,8 +151,8 @@ static int cmd_w(char *args){ // 申请一个空闲的监视点结构
 		printf("invalid expression: '%s'\n", args);
 		return 0;
 	}
-	printf("Set watchpoint %d\n!", NO);
-  printf("expr = %s\nold  value = %#x\n",args,value);
+	printf("Set watchpoint %d !\n", NO);
+        printf("expr = %s\nold  value = %#x   \n",args,value);
 	return 0;
 }
 
