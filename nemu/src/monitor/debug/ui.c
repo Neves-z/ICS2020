@@ -68,7 +68,7 @@ static int cmd_info(char *args){
         // 依次打印所有寄存器
         for(int j=0;j<8;j++) 
           printf("%s:\t%#010x\t%d\t\n", regsl[j], cpu.gpr[j]._32,cpu.gpr[j]._32);
-        printf("eip:\t%#010x\n",cpu.eip);
+        printf("eip:\t%#010x\t%d\t\n",cpu.eip,cpu.eip);
        	for(int j=0;j<8;j++){
           printf("%s:\t%#06x\t%d\t\n", regsw[j], cpu.gpr[j]._16,cpu.gpr[j]._16);
         }
