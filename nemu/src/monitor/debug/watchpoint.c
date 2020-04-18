@@ -73,17 +73,27 @@ int free_wp(int NO){  //释放一个空闲的监视点
 }
 
 int set_watchpoint(char *e) {
-  uint32_t val;
-  bool success;
-  val = expr(e, &success);
-  if(!success) return -1;
   WP* p;
-  p=new_wp();        //启用监视点
+  p=new_wp();              // 启用监视点
   strcpy(p->exprs,e);
-  p->old_val=val;   // 赋旧值
-  printf("Set watchpoint %d !\n", p->NO);
-  printf("expr = %s\nold  value = %#x\n",e,val);
-  return p->NO;     // 返回监视点编号
+  if (!strncmp(p->exprs,"$eip == ",8)) {//是断点
+    printf("Set break point $eip == ADDR\n");
+    return p->NO;
+  }
+  else {//是监视点
+    printf("Set watchpoint %d\n", p->NO);
+    printf("expr = %s\n", p->exprs);
+   } 
+  bool success;
+  p->old_val=expr(e, &success);;   // 赋旧值
+  if(!success){
+      printf("Fail to eval!\n");
+      return -1;
+  }
+  else{
+      printf("Old value = %#x\n", p->old_val);
+  }
+  return p->NO;     // 返回编号
 }
 
 bool delete_watchpoint(int NO){
@@ -133,18 +143,23 @@ WP* scan_watchpoint(void){
        return false;
      }
      else{
-       if(p->new_val!=p->old_val){  // 新旧值不同，监视点被触发
-          printf("Hit watchpoint %d at address %#010x \n",p->NO,cpu.eip);
-          printf("expr      = %s\n",p->exprs);
-          printf("Old value = %#x\n",p->old_val);
-          printf("New value = %#x\n",p->new_val);
-          p->old_val=p->new_val;   // 更新旧值
-          printf("program paused\n");
+       if(p->new_val!=p->old_val){  // 新旧值不同，监视点或断点被触发
+          if (!strncmp(p->exprs,"$eip == ",8)) {  // 是断点表达式
+	      printf("Hit break point,program paused\n");
+          }
+          else {  //是监视点
+	    printf("Hit watchpoint %d at address %#010x \n",p->NO,cpu.eip);
+            printf("expr      = %s\n",p->exprs);
+            printf("Old value = %#x\n",p->old_val);
+            printf("New value = %#x\n",p->new_val);
+            p->old_val=p->new_val;   // 更新旧值
+            printf("program paused\n");
+	    		}
+          return p;          
        }
+      return NULL;
      }
    }
-   return p;
-
 }
 
 void init_wp_pool() {
