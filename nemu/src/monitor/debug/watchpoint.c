@@ -140,20 +140,25 @@ WP* scan_watchpoint(void){
        return false;
      }
      else{
-       if(p->new_val!=p->old_val){  // 新旧值不同，监视点或断点被触发
-          if (!strncmp(p->exprs,"$eip == ",8)) {  // 是断点表达式
-	      printf("Hit break point,program paused\n");
-          }
-          else {  //是监视点
-	    printf("Hit watchpoint %d at address %#010x \n",p->NO,cpu.eip);
+        while(p){  //遍历监视点，遇到被触发的则返回
+        if(p->new_val!=p->old_val){  // 新旧值不同，监视点被触发
+          if (!strncmp(p->exprs,"$eip == ",8)) {//是断点表达式
+               printf("Hit break point,program paused\n");
+           }
+          else {
+            printf("Hit watchpoint %d at address %#010x \n",p->NO,cpu.eip);
             printf("expr      = %s\n",p->exprs);
             printf("Old value = %#x\n",p->old_val);
             printf("New value = %#x\n",p->new_val);
             p->old_val=p->new_val;   // 更新旧值
             printf("program paused\n");
 	    		}
-          return p;          
+          return p;    
        }
+       else{
+         p=p->next;
+       }
+      }
       return NULL;
      }
    }
