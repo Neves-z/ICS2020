@@ -66,7 +66,7 @@ int free_wp(int NO){  //释放一个空闲的监视点
          printf("Watchpoint %d has been deleted！ \n",NO);
        }
        else{
-         printf("No  watchpoint %d\n!",NO);
+         printf("No  watchpoint %d!\n",NO);
        }
     }
     return 0;
