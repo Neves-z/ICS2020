@@ -144,15 +144,9 @@ static int cmd_w(char *args){ // 申请一个空闲的监视点结构
 		puts("Command format: \"w EXPR\"");
 		return 0;
 	}
-	int NO = set_watchpoint(args);
-        bool success;
-        int value=expr(args, &success);
-	if(NO == -1||!success) {  // 申请一个空闲的监视点失败或者表达式求值失败
+	if(set_watchpoint(args) == -1) {  // 申请一个空闲的监视点失败或者表达式求值失败
 		printf("invalid expression: '%s'\n", args);
-		return 0;
 	}
-	printf("Set watchpoint %d !\n", NO);
-        printf("expr = %s\nold  value = %#x   \n",args,value);
 	return 0;
 }
 

@@ -161,13 +161,7 @@ int check_parentheses2(int p, int q) {
         return 0;
     }
   }
-  if(j==0)
-    return true;
-  else
-  {
-    printf("表达式非法！\n");
-      return 0;
-  }
+  return j==0;
 }
 
 static struct Node {
@@ -326,10 +320,11 @@ uint32_t expr(char *e, bool *success) {
 
   if(!check_parentheses1(0,nr_token-1)&&check_parentheses2(0,nr_token-1))
   {
-    printf("括号不匹配，但表达式合法！\n");
+    printf("虽然形式不属于BNF中的 '(' ')'，但表达式合法！\n");
   }
   if(!check_parentheses2(0,nr_token-1))
   {
+    printf("表达式非法！\n");
     return 0;
   }
   *success=true;
