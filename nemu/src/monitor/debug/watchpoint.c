@@ -113,7 +113,7 @@ void list_watchpoint(){
      p=p->next;
   }
   printf("N0  Expr         old value\n");
-  for(int j=i-1;j>0;j--){
+  for(int j=i-1;j>=0;j--){
     printf("%d  %s           %#x\n",watp[j].no,watp[j].exprssion,watp[j].Value);
   }
   return;
