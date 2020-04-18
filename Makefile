@@ -13,4 +13,7 @@ submit: clean
 	git gc
 	cd .. && tar cj $(shell basename `pwd`) > $(STU_ID).tar.bz2
 
-.PHONY: default clean submit
+count:
+	find nemu/ -name "*[.h|.c]" |xargs cat|wc -l
+
+.PHONY: default clean submi count
