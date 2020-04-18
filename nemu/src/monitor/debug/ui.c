@@ -77,7 +77,7 @@ static int cmd_info(char *args){
         }
     }
     else if (strcmp(subcommand,"w")==0) {
-       // list_watchpoint();
+        list_watchpoint();
 	    // 这里我们会在 PA1.3 中实现
     }
     else{

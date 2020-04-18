@@ -1,5 +1,6 @@
 #include "monitor/watchpoint.h"
 #include "monitor/expr.h"
+#include "cpu/reg.h"
 
 #define NR_WP 32
 
@@ -36,7 +37,7 @@ int free_wp(int NO){  //释放一个空闲的监视点
     WP* p=head;
     WP* pre=head;
     if(head==NULL){
-      printf("没有正在使用的监视点！\n");
+      printf("No watchpoint！\n");
       return 0;
     }
     else if(head->NO==NO){ //头结点就是这个监视点
@@ -88,6 +89,48 @@ int set_watchpoint(char *e) {
 bool delete_watchpoint(int NO){
    free_wp(NO);
    return true;
+}
+
+void list_watchpoint(){
+  WP* p=head;
+  if(!p){
+    printf("No watchpoint now\n!");
+    return;
+  }
+  printf("N0  Expr         old value\n");
+  while(p){
+     printf("%d  %s           %#x\n",p->NO,p->exprs,p->old_val);
+     p=p->next;
+  }
+  return;
+} 
+
+WP* scan_watchpoint(void){
+   WP* p=head;
+   if(!p){
+    printf("No watchpoint now\n!");
+    return false;
+   }
+   else{
+     bool success;
+     p->new_val=expr(p->exprs,&success);
+     if(!success){
+       printf("Fail to eval the  new_val of watchpoint %d (%s) !",p->NO,p->exprs);
+       return false;
+     }
+     else{
+       if(p->new_val!=p->old_val){  // 新旧值不同，监视点被触发
+          printf("Hit watchpoint %d at address %#010x \n",p->NO,cpu.eip);
+          printf("expr      = %s\n",p->exprs);
+          printf("Old value = %#x\n",p->old_val);
+          printf("New value = %#x\n",p->new_val);
+          p->old_val=p->new_val;   // 更新旧值
+          printf("program paused\n");
+       }
+     }
+   }
+   return p;
+
 }
 
 void init_wp_pool() {
