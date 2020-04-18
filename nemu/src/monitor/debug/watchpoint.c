@@ -91,19 +91,33 @@ bool delete_watchpoint(int NO){
    return true;
 }
 
+typedef struct point{
+  int no;
+  char exprssion[32];
+  int Value;
+}wa; //定义结构体 储存监视点信息
+
+
 void list_watchpoint(){
   WP* p=head;
   if(!p){
     printf("No watchpoint now\n!");
     return;
   }
-  printf("N0  Expr         old value\n");
+  wa watp[32]; 
+  int i=0;
   while(p){
-     printf("%d  %s           %#x\n",p->NO,p->exprs,p->old_val);
+     watp[i].no=p->NO;  // 由于更新监视点信息采用头插法，导致了遍历过程中，编号大的先输出,所以定义数组先储存再倒叙输出
+     strcpy(watp[i].exprssion,p->exprs);
+     watp[i++].Value=p->old_val;
      p=p->next;
   }
+  printf("N0  Expr         old value\n");
+  for(int j=i-1;j>0;j--){
+    printf("%d  %s           %#x\n",watp[j].no,watp[j].exprssion,watp[j].Value);
+  }
   return;
-} 
+}  
 
 WP* scan_watchpoint(void){
    WP* p=head;
