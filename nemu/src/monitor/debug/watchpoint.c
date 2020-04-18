@@ -76,12 +76,12 @@ int set_watchpoint(char *e) {
   WP* p;
   p=new_wp();              // 启用监视点
   strcpy(p->exprs,e);
+  bool success;
+  p->old_val=expr(e, &success);  // 赋旧值
   if (!strncmp(p->exprs,"$eip == ",8)) {//是断点
      printf("Set break point $eip == ADDR\n");
   }
   else {//是监视点
-     bool success;
-     p->old_val=expr(e, &success);;   // 赋旧值
      printf("Set watchpoint %d\n", p->NO);
      printf("expr = %s\n", p->exprs);
      if(!success){
