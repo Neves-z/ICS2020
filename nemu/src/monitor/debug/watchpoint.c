@@ -101,7 +101,7 @@ typedef struct point{
 void list_watchpoint(){
   WP* p=head;
   if(!p){
-    printf("No watchpoint now\n!");
+    printf("No watchpoint now!\n");
     return;
   }
   wa watp[32]; 
@@ -112,7 +112,7 @@ void list_watchpoint(){
      watp[i++].Value=p->old_val;
      p=p->next;
   }
-  printf("N0   Expr         old value\n");
+  printf("N0    Expr        old value\n");
   for(int j=i-1;j>=0;j--){
     printf("%d   %s          %#x\n",watp[j].no,watp[j].exprssion,watp[j].Value);
   }
