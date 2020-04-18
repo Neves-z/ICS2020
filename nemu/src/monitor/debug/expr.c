@@ -317,15 +317,14 @@ uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     return 0;
   }
-
-  if(!check_parentheses1(0,nr_token-1)&&check_parentheses2(0,nr_token-1))
-  {
-    //printf("虽然形式不属于BNF中的 '(' ')'，但表达式合法！\n");
-  }
   if(!check_parentheses2(0,nr_token-1))
   {
     printf("表达式非法！\n");
     return 0;
+  }
+  else if(!check_parentheses1(0,nr_token-1))
+  {
+   // printf("虽然形式不属于BNF中的 '(' ')'，但表达式合法！\n");
   }
   *success=true;
     int i;
