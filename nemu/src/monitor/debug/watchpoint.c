@@ -77,24 +77,22 @@ int set_watchpoint(char *e) {
   p=new_wp();              // 启用监视点
   strcpy(p->exprs,e);
   if (!strncmp(p->exprs,"$eip == ",8)) {//是断点
-    printf("Set break point $eip == ADDR\n");
-    return p->NO;
+     printf("Set break point $eip == ADDR\n");
   }
   else {//是监视点
-    printf("Set watchpoint %d\n", p->NO);
-    printf("expr = %s\n", p->exprs);
-   } 
-  bool success;
-  p->old_val=expr(e, &success);;   // 赋旧值
-  if(!success){
-      printf("Fail to eval!\n");
-      return -1;
-  }
-  else{
-      printf("Old value = %#x\n", p->old_val);
+     bool success;
+     p->old_val=expr(e, &success);;   // 赋旧值
+     printf("Set watchpoint %d\n", p->NO);
+     printf("expr = %s\n", p->exprs);
+     if(!success){
+        printf("Fail to eval!\n");
+        return -1;
+     }
+     printf("Old value = %#x\n", p->old_val);
   }
   return p->NO;     // 返回编号
 }
+
 
 bool delete_watchpoint(int NO){
    free_wp(NO);
