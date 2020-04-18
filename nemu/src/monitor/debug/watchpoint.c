@@ -130,7 +130,6 @@ void list_watchpoint(){
 WP* scan_watchpoint(void){
    WP* p=head;
    if(!p){
-    printf("No watchpoint now\n!");
     return false;
    }
    else{
