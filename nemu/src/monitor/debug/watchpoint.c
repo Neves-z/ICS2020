@@ -80,7 +80,7 @@ int set_watchpoint(char *e) {
   p=new_wp();        //启用监视点
   strcpy(p->exprs,e);
   p->old_val=val;   // 赋旧值
-  printf("Set watchpoint %d\n!", p->NO);
+  printf("Set watchpoint !%d\n", p->NO);
   printf("expr = %s\nold  value = %#x\n",e,val);
   return p->NO;     // 返回监视点编号
 }
