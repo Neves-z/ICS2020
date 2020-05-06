@@ -29,6 +29,20 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
         /* in PA2 able to directly access these registers. */
         rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
         vaddr_t eip;
+	union {
+             struct {
+               uint32_t CF:1;//CF占一位
+               unsigned : 5;//之后是5位空域
+               uint32_t ZF:1;//ZF占一位
+               uint32_t SF:1;//SF占一位
+               unsigned : 1;//1位空域
+               uint32_t IF:1;//IF占一位
+               unsigned : 1;//1位空域
+               uint32_t OF:1;//OF占一位
+               unsigned : 20;//20位空域
+              };
+            uint32_t value;//赋初值
+          }eflags;
       };
    };
 }CPU_state;

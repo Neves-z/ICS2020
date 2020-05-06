@@ -113,10 +113,10 @@ static inline void rtl_sr(int r, int width, const rtlreg_t* src1) {
 
 #define make_rtl_setget_eflags(f) \
   static inline void concat(rtl_set_, f) (const rtlreg_t* src) { \
-    TODO(); \
+    cpu.eflags.f=*src; \
   } \
   static inline void concat(rtl_get_, f) (rtlreg_t* dest) { \
-    TODO(); \
+    *dest=cpu.eflags.f; \
   }
 
 make_rtl_setget_eflags(CF)
@@ -126,59 +126,95 @@ make_rtl_setget_eflags(SF)
 
 static inline void rtl_mv(rtlreg_t* dest, const rtlreg_t *src1) {
   // dest <- src1
-  TODO();
+   *dest = *src1;
+  //TODO();
 }
 
 static inline void rtl_not(rtlreg_t* dest) {
   // dest <- ~dest
-  TODO();
+  *dest=~*dest;
+  //TODO();
 }
 
-static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
+static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {  //符号扩展
   // dest <- signext(src1[(width * 8 - 1) .. 0])
-  TODO();
+  int32_t t=(int32_t)*src1;  //讲源操作数强制转换为32位带符号数；
+  switch(width){
+    case 4:{ //三十二位
+      *dest=t;
+      break;
+    }
+    case 2:{  //十六位
+      t=t<<16;
+      t=t>>16;
+      *dest=t;
+      break;
+    }
+    case 1:{  //八位
+      t=t<<24;
+      t=t>>24;
+      *dest=t;
+      break;
+    }
+    default:assert(0);
+  }
+  //TODO();
 }
 
 static inline void rtl_push(const rtlreg_t* src1) {
   // esp <- esp - 4
   // M[esp] <- src1
-  TODO();
+  cpu.esp -= 4;
+  rtl_sm(&cpu.esp,4,src1);
+  //TODO();
 }
 
 static inline void rtl_pop(rtlreg_t* dest) {
   // dest <- M[esp]
+  rtl_lm(dest,&cpu.esp,4);
+  cpu.esp +=4;
   // esp <- esp + 4
-  TODO();
+  //TODO();
 }
 
 static inline void rtl_eq0(rtlreg_t* dest, const rtlreg_t* src1) {
   // dest <- (src1 == 0 ? 1 : 0)
-  TODO();
+   *dest=(*src1 == 0 ? 1 : 0);
+  //TODO();
 }
 
 static inline void rtl_eqi(rtlreg_t* dest, const rtlreg_t* src1, int imm) {
   // dest <- (src1 == imm ? 1 : 0)
-  TODO();
+  *dest=(*src1 == imm ? 1 : 0);
+  //TODO();
 }
 
-static inline void rtl_neq0(rtlreg_t* dest, const rtlreg_t* src1) {
+static inline void rtl_neq0(rtlreg_t* dest, const rtlreg_t* src1) {  
   // dest <- (src1 != 0 ? 1 : 0)
-  TODO();
+  *dest=(*src1 != 0 ? 1 : 0);
+  //TODO();
 }
 
-static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {
+static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {//把操作数的符号位赋给dest指向的内容；
   // dest <- src1[width * 8 - 1]
-  TODO();
+  *dest = src1[width * 8 - 1];
+  //TODO();
 }
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   // eflags.ZF <- is_zero(result[width * 8 - 1 .. 0])
-  TODO();
+  if(*result==0)
+   t0=1;
+  else t0=0;
+  rtl_set_ZF(&t0);
+  //TODO();
 }
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
-  TODO();
+  t0=result[width * 8 - 1];
+  rtl_set_SF(&t0);
+  //TODO();
 }
 
 static inline void rtl_update_ZFSF(const rtlreg_t* result, int width) {
