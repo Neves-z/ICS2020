@@ -13,3 +13,7 @@ make_EHelper(sub);
 make_EHelper(xor);
 make_EHelper(nop);
 make_EHelper(ret);
+make_EHelper(inc);
+make_EHelper(dec);
+make_EHelper(call_rm);
+make_EHelper(jmp_rm);

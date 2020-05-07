@@ -41,7 +41,10 @@ make_EHelper(ret) {
 }
 
 make_EHelper(call_rm) {
-  TODO();
-
+ // TODO();
+rtl_li(&t2,decoding.seq_eip); //把call指令的下一条指令的地址，即返回地址保存在临时寄存器中；
+  rtl_push(&t2); //准备入口参数，返回地址进栈；
+  decoding.jmp_eip = id_dest->val;
+  decoding.is_jmp = 1;
   print_asm("call *%s", id_dest->str);
 }
