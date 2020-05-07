@@ -7,8 +7,21 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) {
-  TODO();
+ // TODO();
+  rtl_sub(&t2, &id_dest->val, &id_src->val); //t2=id_dest->val,-id_src->val
+  rtl_sltu(&t3, &id_dest->val, &t2);  // t3=(id_dest->val<t2) ? 1:0
+  operand_write(id_dest, &t2);  //把结果写入目的操作数
+  rtl_update_ZFSF(&t2, id_dest->width);  //设置zf、sf标志位
 
+  rtl_sltu(&t0, &id_dest->val, &t2);
+  rtl_or(&t0, &t3, &t0);
+  rtl_set_CF(&t0); //设置cf标志位 ，若看作无符号相减，则都为正数，如果被减数小于结果，溢出
+
+  rtl_xor(&t0, &id_dest->val, &id_src->val);
+  rtl_xor(&t1, &id_dest->val, &t2);
+  rtl_and(&t0, &t0, &t1);
+  rtl_msb(&t0, &t0, id_dest->width);
+  rtl_set_OF(&t0); //设置of标志位
   print_asm_template2(sub);
 }
 
