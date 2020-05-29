@@ -40,6 +40,7 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
       rtl_get_ZF(&t0);
       rtl_get_SF(&t1);
       rtl_get_OF(&t2);
+      printf("zf:%d\nsf:%d\nof:%d\n",t0,t1,t2);
       rtl_xor(&t3, &t1, &t2);
       rtl_or(dest, &t0, &t3); //带符号数的小于等于，ZF=1或者SF不等于OF
     }break;
