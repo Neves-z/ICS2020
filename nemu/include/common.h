@@ -2,7 +2,7 @@
 #define __COMMON_H__
 
 #define DEBUG
-//#define DIFF_TEST  // 启动qemu
+#define DIFF_TEST  // 启动qemu
 
 /* You will define this macro in PA2 */
 //#define HAS_IOE
