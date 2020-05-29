@@ -23,4 +23,7 @@ make_EHelper(jmp);
 make_EHelper(jcc);
 make_EHelper(cmp);
 make_EHelper(add);
+make_EHelper(or);
+make_EHelper(adc);
+make_EHelper(sbb);
 make_EHelper(leave); 
