@@ -40,6 +40,7 @@ make_EHelper(sub) {
 
 make_EHelper(cmp) {
  // TODO();
+ printf("%d %d\n",id_dest->val, id_src->val);
   rtl_sub(&t2, &id_dest->val, &id_src->val);
   rtl_update_ZFSF(&t2, id_dest->width);
   rtl_sltu(&t0, &id_dest->val, &t2);
