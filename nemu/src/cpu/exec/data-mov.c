@@ -15,9 +15,9 @@ make_EHelper(push) {
   else if (id_dest->type == OP_TYPE_MEM) { 
     rtl_sm(&id_dest->addr, id_dest->width, &t0); 
   }//如果是在内存里面，写入内存
-  else { 
+ /* else { 
     assert(0); 
-  } 
+  }*/ 
   print_asm_template1(push);
 }
 
