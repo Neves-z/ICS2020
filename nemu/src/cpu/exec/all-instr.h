@@ -22,4 +22,5 @@ make_EHelper(and);
 make_EHelper(jmp);
 make_EHelper(jcc);
 make_EHelper(cmp);
-make_EHelper(add); 
+make_EHelper(add);
+make_EHelper(leave); 
