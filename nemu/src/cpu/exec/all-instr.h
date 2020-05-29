@@ -29,4 +29,5 @@ make_EHelper(sbb);
 make_EHelper(leave);
 make_EHelper(setcc); 
 make_EHelper(movzx);
-make_EHelper(test);  
+make_EHelper(test);
+make_EHelper(imull2); 
