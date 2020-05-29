@@ -197,8 +197,9 @@ static inline void rtl_neq0(rtlreg_t* dest, const rtlreg_t* src1) {
 
 static inline void rtl_msb(rtlreg_t* dest, const rtlreg_t* src1, int width) {//把操作数的符号位赋给dest指向的内容；
   // dest <- src1[width * 8 - 1]
-  *dest = src1[width * 8 - 1];
-  //TODO();
+ // *dest = src1[width * 8 - 1];
+ rtl_shri(dest,src1,width*8-1); 
+ //TODO();
 }
 
 static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
@@ -212,8 +213,9 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
 
 static inline void rtl_update_SF(const rtlreg_t* result, int width) {
   // eflags.SF <- is_sign(result[width * 8 - 1 .. 0])
-  t0=result[width * 8 - 1];
-  rtl_set_SF(&t0);
+ // t0=result[width * 8 - 1];
+ rtl_shri(&t0,result,width*8-1);
+   rtl_set_SF(&t0);
   //TODO();
 }
 
