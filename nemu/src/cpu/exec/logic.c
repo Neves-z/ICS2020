@@ -49,11 +49,14 @@ make_EHelper(sar) {
   // printf("%d %d\n",id_dest->val,id_src->val);   
  t1=id_dest->val;
   switch(id_dest->width){
-    case 1: t1=(t1<<24)>>24;
+    case 1: t2=24;
+            rtl_shl(&t1,&t1,&t2);
+            rtl_sar(&t1,&t1,&t2);
             break;
-    case 2: t1=(t1<<16)>>16;
-            printf("0k\n");
-	    break;
+    case 2: t2=16;
+            rtl_shl(&t1,&t1,&t2);
+            rtl_sar(&t1,&t1,&t2);
+            break;
   }
   rtl_sar(&t0,&t1,&id_src->val);
   printf("%d %d\n",t0,t1);
