@@ -51,7 +51,7 @@ make_EHelper(sar) {
   operand_write(id_dest,&t0);
   rtl_update_ZFSF(&t0,id_dest->width);
   print_asm_template2(sar);
- // printf("%d\n",id_dest->val);
+  printf("%d\n",id_dest->width);
  ;
 }
 
