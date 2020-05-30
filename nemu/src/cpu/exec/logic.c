@@ -52,7 +52,8 @@ make_EHelper(sar) {
     case 1: t1=(t1<<24)>>24;
             break;
     case 2: t1=(t1<<16)>>16;
-            break;
+            printf("0k\n");
+	    break;
   }
   rtl_sar(&t0,&t1,&id_src->val);
   printf("%d %d\n",t0,t1);
