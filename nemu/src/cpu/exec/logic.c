@@ -55,6 +55,7 @@ make_EHelper(sar) {
             break;
   }
   rtl_sar(&t0,&t1,&id_src->val);
+  printf("%d %d\n",t0,t1);
   // rtl_sar(&t0,&id_dest->val,&id_src->val);
   operand_write(id_dest,&t0);
   rtl_update_ZFSF(&t0,id_dest->width);
