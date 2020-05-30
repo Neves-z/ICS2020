@@ -87,7 +87,7 @@ make_EHelper(not) {
 }
 
 make_EHelper(rol) {
-  TODO();
+ // TODO();
   rtl_li(&t0,id_dest->val);
   rtl_shri(&t1,&t0,id_dest->width*8-id_src->val);
   rtl_shli(&t0,&t0,id_src->val);
