@@ -7,16 +7,16 @@ make_EHelper(mov) {
 
 make_EHelper(push) {
  // TODO();
-  t0=id_dest->val;
-  rtl_push(&t0);//把临时寄存器压栈，保存旧值；
-  if (id_dest->type == OP_TYPE_REG) {
+ rtl_push(&id_dest->val);
+ // t0=id_dest->val;
+ // rtl_push(&t0);//把临时寄存器压栈，保存旧值；
+ /* if (id_dest->type == OP_TYPE_REG) {
     rtl_sr(id_dest->reg, id_dest->width, &t0); 
   }//如果目的操作数是寄存器操作数,写入寄存器
   else if (id_dest->type == OP_TYPE_MEM) { 
     rtl_sm(&id_dest->addr, id_dest->width, &t0); 
   }//如果是在内存里面，写入内存
- /* else { 
-    assert(0); 
+  
   }*/ 
   print_asm_template1(push);
 }
