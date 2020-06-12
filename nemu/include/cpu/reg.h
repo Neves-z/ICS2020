@@ -43,6 +43,11 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
               };
             uint32_t value;//赋初值
           }eflags;
+      rtlreg_t cs;//cs寄存器
+       struct {
+         uint32_t base; //32位base
+         uint16_t limit; //16位limit
+        }idtr;   
       };
    };
 }CPU_state;
