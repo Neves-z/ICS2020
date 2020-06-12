@@ -8,7 +8,7 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 
  // TODO();
  if(NO>cpu.idtr.limit){
-    printf("%d %d\n",NO,cpu.idtr.limit);
+   // printf("%d %d\n",NO,cpu.idtr.limit);
     assert(0);
    }
   int low,high;
