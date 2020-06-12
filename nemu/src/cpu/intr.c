@@ -18,6 +18,7 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   low=vaddr_read(cpu.idtr.base+8*NO,4) & 0x0000ffff;
   high=vaddr_read(cpu.idtr.base+8*NO+4,4) & 0xffff0000;
   decoding.jmp_eip= low | high; //连接跳转地址
+  printf("%x\n", decoding.jmp_eip);
   decoding.is_jmp=1;
 }
 
