@@ -33,13 +33,13 @@ int _write(int fd, void *buf, size_t count){
 void *_sbrk(intptr_t increment){
   extern char _end;
   static intptr_t program_break=(intptr_t)&_end;
+  intptr_t old=program_break;
   if(_syscall_(SYS_brk,program_break+increment,0,0)==0){
-    intptr_t old=program_break;
     program_break=program_break+increment;
-    return (void*)old;
+    return (void *)old;
   }
   else{
-    return (void*)-1;
+    return (void *)-1;
   }
 }
 
