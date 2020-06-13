@@ -33,7 +33,7 @@ static inline uintptr_t sys_close(uintptr_t fd) {
 static inline uintptr_t sys_brk(_RegSet *r) {
  // TODO();
  SYSCALL_ARG1(r) = 0;//r->eax = 0 总是成功
-  return 1;
+  return 0;
 }
 
 static inline uintptr_t sys_none(_RegSet *r) {
