@@ -117,6 +117,22 @@ make_EHelper(movzx) {
   print_asm_template2(movzx);
 }
 
+make_EHelper(movsb){
+  id_dest->width=decoding.is_operand_size_16?2:4;
+  rtl_sext(&t0,&id_src->val,id_src->width);
+  operand_write(id_dest,&t0);
+  /*int in=1;
+  rtl_lr(&t0,R_ESI,4);
+  rtl_lm(&t1,&t0,1);
+  t0+=in;
+  rtl_sr(R_ESI,&t0,4);
+  rtl_lr(&t0,R_EDI,4);
+  rtl_sm(&t0,&t1,1);
+  t0+=in;
+  rtl_sr(R_EDI,&t0,4);*/
+  print_asm_template2(movsb);
+}
+
 make_EHelper(lea) {
   rtl_li(&t2, id_src->addr);
   operand_write(id_dest, &t2);
