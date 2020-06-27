@@ -67,7 +67,15 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
   if(cpu.cr0.paging) {
         if (((addr<<20)>>20)+len>0x1000) {  // 页内偏移量+len>4KB=2^12=0x1000
             /* this is a special case, you can handle it later. */
-            assert(0);
+            //assert(0);
+	   int first_len, second_len;
+           first_len = 0x1000 - (addr & 0xfff); //第一个页面上数据的长度
+           second_len = len - first_len; //第二个页面上数据的长度
+           uint32_t first_addr = page_translate(addr, false);
+           uint32_t first_data = paddr_read(first_addr, first_len); //读第一个页面的数据
+           uint32_t second_addr = page_translate(addr + first_len, false);
+           uint32_t second_data = paddr_read(second_addr, second_len); // 读第二个页面的数据
+           return first_data + (second_data << (first_len << 3)); //把两个页面的数据整合
         }
         else {
             paddr_t paddr = page_translate(addr,false);
@@ -82,7 +90,16 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
   if(cpu.cr0.paging) {
     if (((addr<<20)>>20)+len>0x1000) {  // 页内偏移量+len>4KB=2^12=0x1000
         /* this is a special case, you can handle it later. */
-        assert(0);
+       // assert(0);
+       int first_len, second_len;
+        first_len = 0x1000 - (addr & 0xfff); second_len = len - first_len;
+
+        uint32_t first_addr = page_translate(addr, true);
+        paddr_write(first_addr, first_len, data);  //往第一个页面写低位数据
+
+        uint32_t high_data = data >> (first_len << 3);
+        uint32_t second_addr = page_translate(addr + first_len, true);
+        paddr_write(second_addr, second_len, high_data);  // 往第二个页面写高维数据
     }
     else {
         paddr_t paddr = page_translate(addr,true);
