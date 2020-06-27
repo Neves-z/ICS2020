@@ -20,9 +20,9 @@ make_EHelper(lidt) {
 make_EHelper(mov_r2cr) {
  // TODO();
   switch(id_dest->reg){
-    case 0:  cpu.cr0.val=id_dest->val;
+    case 0:  cpu.cr0.val=id_src->val;
              break;
-    case 3:  cpu.cr3.val=id_dest->val;
+    case 3:  cpu.cr3.val=id_src->val;
              break;
     default: assert(0);
              break;
@@ -33,9 +33,9 @@ make_EHelper(mov_r2cr) {
 make_EHelper(mov_cr2r) {
   //TODO();
   switch(id_dest->reg){
-    case 0:  id_dest->val=cpu.cr0.val;
+    case 0:  id_src->val=cpu.cr0.val;
              break;
-    case 3:  id_dest->val=cpu.cr3.val;
+    case 3:  id_src->val=cpu.cr3.val;
              break;
     default: assert(0);
              break;
