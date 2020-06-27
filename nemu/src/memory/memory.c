@@ -18,17 +18,19 @@ paddr_t page_translate(vaddr_t vaddr,bool write){
     PTE pte;
     
     Log("vaddr: %#x",vaddr); 
+   
     uint32_t DIR = (vaddr >> 22);  // 取虚拟地址中隐含的页目录项
+    Log("DIR: %#x",DIR);
     uint32_t PDE_addr=(cpu.cr3.page_directory_base << 12) + (DIR << 2);  // 计算页目录项地址
-     
+    Log("CR3: %#x",cpu.cr3.page_directory_base);  
     pde.val=paddr_read(PDE_addr,4);  // 取页表项基地址
-    // Log("PDE_addr: %#x    pde.val: %#x",PDE_addr,pde.val);
+    Log("PDE_addr: %#x    pde.val: %#x",PDE_addr,pde.val);
     assert(pde.present);  
     
     uint32_t PAGE=((vaddr >> 12) & 0x3ff); // 取虚拟地址的中间十位，即页表项内偏移地址；
     uint32_t PTE_addr=(pde.val & 0xfffff000)+(PAGE << 2); //取从页目录里获取的页表项基址的高二十位与虚拟地址的中间十位*4结合
     pte.val=paddr_read(PTE_addr,4);
-   // Log("PTE_addr: %#x    pte.val: %#x",PTE_addr,pte.val);
+    Log("PTE_addr: %#x    pte.val: %#x",PTE_addr,pte.val);
     assert(pte.present);
     
     uint32_t physical_addr=(pte.val & 0xfffff000)+(vaddr & 0xfff); // 物理地址就是pte的高二十位和虚拟地址的低十二位的结合；
